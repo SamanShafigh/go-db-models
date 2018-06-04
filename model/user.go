@@ -2,25 +2,28 @@ package model
 
 //User represents an application user
 type User struct {
-	ID         int64
-	Email      string
-	Password   string
-	FirstName  string
-	MiddleName string
-	LastName   string
+	ID        string `db:"id"`
+	Email     string `db:"email"`
+	Password  string `db:"password"`
+	FirstName string `db:"first_name"`
+	LastName  string `db:"last_name"`
 }
 
-//UserFilter is used for filtering results
+// MakeUser makes a new user
+func MakeUser(id, firstName, lastName string) User {
+	return User{ID: id, FirstName: firstName, LastName: lastName}
+}
+
+// UserFilter is used for filtering results
 type UserFilter func(*UserFilterConfig) error
 
-//UserFilterConfig is the config for filtering results
+// UserFilterConfig is the config for filtering results
 type UserFilterConfig struct {
-	Limit      int64
-	ID         int64
-	Email      string
-	FirstName  string
-	MiddleName string
-	LastName   string
+	Limit     int64  `json:"limit"`
+	ID        string `json:"id"`
+	Email     string `json:"email"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
 }
 
 func UserLimitFilter(limit int64) UserFilter {
@@ -30,7 +33,7 @@ func UserLimitFilter(limit int64) UserFilter {
 	}
 }
 
-func UserIDFilter(id int64) UserFilter {
+func UserIDFilter(id string) UserFilter {
 	return func(fc *UserFilterConfig) error {
 		fc.ID = id
 		return nil
@@ -51,13 +54,6 @@ func UserFirstNameFilter(firstName string) UserFilter {
 	}
 }
 
-func UserMiddleNameFilter(middleName string) UserFilter {
-	return func(fc *UserFilterConfig) error {
-		fc.MiddleName = middleName
-		return nil
-	}
-}
-
 func UserLastNameFilter(lastName string) UserFilter {
 	return func(fc *UserFilterConfig) error {
 		fc.LastName = lastName
@@ -65,9 +61,9 @@ func UserLastNameFilter(lastName string) UserFilter {
 	}
 }
 
-//UserStorer represents a user store
-//this can be used to store user on different
-//data store
+// UserStorer represents a user store
+// this can be used to store user on different
+// data store
 type UserStorer interface {
 	List(...UserFilter) ([]User, error)
 	Get(...UserFilter) (User, error)

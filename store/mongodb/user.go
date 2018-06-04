@@ -1,14 +1,13 @@
 package store
 
 import (
-	"github.com/jmoiron/sqlx"
-
-	"github.com/steven-ferrer/go-db-models/model"
+	"github.com/SamanShafigh/go-db-models/models"
+	"gopkg.in/mgo.v2"
 )
 
 //UserStore implements models.UserStorer
 type UserStore struct {
-	db *sqlx.DB
+	session *mgo.Session
 }
 
 func (cs *UserStore) List(filters ...models.UserFilter) ([]models.User, error) {
@@ -31,6 +30,6 @@ func (cs *UserStore) Delete(filters ...models.UserFilter) error {
 	return nil
 }
 
-func NewUserStore(db *sqlx.DB) models.UserStorer {
-	return &UserStore{db}
+func NewUserStore(session *mgo.Session) models.UserStorer {
+	return &UserStore{session}
 }
