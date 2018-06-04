@@ -4,7 +4,7 @@ Demonstrating database agnostic models in Golang with example. The main idea is 
 
 ## Structure
 
-Models (entities) are located in `model` folder and they only represent the structure of your model and also an interface for a model storer which handles the DB functionalities the model needs. In a model file we also define a model filter structure and some setter to set the filter which is used to filter the result.
+Models (entities) are located in `model` folder and they only represent the structure of your model and also an interface for a model storer which handles the DB functionalities the model needs. In a model file we also define a model filter structure and some setter to set a filter which can be used to filter the result.
 
 ```go
 package model
