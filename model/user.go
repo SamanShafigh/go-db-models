@@ -10,9 +10,15 @@ type User struct {
 	LastName  string `db:"last_name"`
 }
 
-// MakeUser makes a new user
-func MakeUser(id, firstName, lastName string, status int64) User {
-	return User{ID: id, FirstName: firstName, LastName: lastName, Status: status}
+// UserStorer represents a user store
+// this can be used to store user on different
+// data store
+type UserStorer interface {
+	Get(...UserFilterHandler) (*[]User, error)
+	GetByID(string) (*User, error)
+	Add(User) error
+	Update(User) error
+	Delete(...UserFilterHandler) error
 }
 
 // UserFilterHandler is used for filtering results
@@ -77,13 +83,7 @@ func GetUserFilter(filters ...UserFilterHandler) UserFilter {
 	return fc
 }
 
-// UserStorer represents a user store
-// this can be used to store user on different
-// data store
-type UserStorer interface {
-	Get(...UserFilterHandler) (*[]User, error)
-	GetByID(string) (*User, error)
-	Add(User) error
-	Update(User) error
-	Delete(...UserFilterHandler) error
+// MakeUser makes a new user
+func MakeUser(id, firstName, lastName string, status int64) User {
+	return User{ID: id, FirstName: firstName, LastName: lastName, Status: status}
 }
