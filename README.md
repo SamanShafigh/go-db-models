@@ -1,8 +1,7 @@
 # go-db-models
-Demonstrating database agnostic models in Golang
 
-### StackExchange Codereview Question
-Please follow [this](https://codereview.stackexchange.com/questions/177338/database-agnostic-user-model-in-golang) for the stackexchange codereview question.
+Demonstrating database agnostic models in Golang with example. The main idea is based on https://github.com/steven-ferrer/go-db-models however I did some modifcation + examples
+
 
 ## Contributing
 
