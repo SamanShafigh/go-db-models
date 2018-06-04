@@ -65,6 +65,7 @@ Then we can use this structure like this
 	)
 ```
 
+mysqld is just a simple wrapper around sqlx so you can implement some extra function 
 
 ## Contributing
 
