@@ -1,6 +1,6 @@
 # go-db-models
 
-Demonstrating database agnostic models in Golang with example. The main idea is based on https://github.com/steven-ferrer/go-db-models however I did some modifcation + examples
+Demonstrating database agnostic models in Golang with example. The main idea is based on https://github.com/steven-ferrer/go-db-models however I did some modifcation and refacotring
 
 ## Structure
 
@@ -51,6 +51,20 @@ func NewUserStore(db *sqly.DB) model.UserStorer {
 	return &UserStore{db}
 }
 ```
+
+Then we can use this structure like this
+```go
+  userStore := store.NewUserStore(db)
+
+  user := model.MakeUser(sqld.MakeUUID(), "Saman", "Shafigh", 1)
+	userStore.Add(user)
+
+	user, err := userStore.Get(
+		model.UserStatusFilter(1),
+		model.UserFirstNameFilter("Saman"),
+	)
+```
+
 
 ## Contributing
 
