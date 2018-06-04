@@ -2,6 +2,55 @@
 
 Demonstrating database agnostic models in Golang with example. The main idea is based on https://github.com/steven-ferrer/go-db-models however I did some modifcation + examples
 
+## Structure
+
+Models (entities) are located in `model` folder and they only represent the structure of your model and also an interface for a model storer which handles the DB functionalities the model needs. In a model file we also define a model filter structure and some setter to set the filter which is used to filter the result.
+
+```go
+package model
+
+type User struct {
+	FirstName string `db:"first_name"`
+	LastName  string `db:"last_name"`
+}
+
+type UserStorer interface {
+	Get(...UserFilterHandler) (*[]User, error)
+	Add(User) error
+	Update(User) error
+	Delete(...UserFilterHandler) error
+}
+```
+
+Stores are located in `store` folder. Note that a model is separated from its store so you can have multiple implementation of a store for a same model for different  storage drivers as long as they satisfy the model storer interface. 
+
+```go
+package store
+
+type UserStore struct {
+	db *sqly.DB
+}
+
+func (cs *UserStore) Get(fh ...model.UserFilterHandler) (*[]model.User, error) {
+	return nil, nil
+}
+
+func (cs *UserStore) Add(User model.User) error {
+	return nil
+}
+
+func (cs *UserStore) Update(User model.User) error {
+	return nil
+}
+
+func (cs *UserStore) Delete(fh ...model.UserFilterHandler) error {
+	return nil
+}
+
+func NewUserStore(db *sqly.DB) model.UserStorer {
+	return &UserStore{db}
+}
+```
 
 ## Contributing
 

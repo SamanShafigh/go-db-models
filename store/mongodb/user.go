@@ -1,7 +1,7 @@
 package store
 
 import (
-	"github.com/SamanShafigh/go-db-models/models"
+	"github.com/SamanShafigh/go-db-models/model"
 	"gopkg.in/mgo.v2"
 )
 
@@ -10,26 +10,32 @@ type UserStore struct {
 	session *mgo.Session
 }
 
-func (cs *UserStore) List(filters ...models.UserFilter) ([]models.User, error) {
+// Get gets list of user entities based on filter handler
+func (cs *UserStore) Get(fh ...model.UserFilterHandler) (*[]model.User, error) {
 	return nil, nil
 }
 
-func (cs *UserStore) Get(filters ...models.UserFilter) (models.User, error) {
-	return models.User{}, nil
+// GetByID gets one user by ID
+func (cs *UserStore) GetByID(ID string) (*model.User, error) {
+	return nil, nil
 }
 
-func (cs *UserStore) Create(User models.User) error {
+// Add adds a user entity
+func (cs *UserStore) Add(User model.User) error {
 	return nil
 }
 
-func (cs *UserStore) Update(User models.User) error {
+// Update updates a user entity
+func (cs *UserStore) Update(User model.User) error {
 	return nil
 }
 
-func (cs *UserStore) Delete(filters ...models.UserFilter) error {
+// Delete deletes a user entity
+func (cs *UserStore) Delete(fh ...model.UserFilterHandler) error {
 	return nil
 }
 
-func NewUserStore(session *mgo.Session) models.UserStorer {
+// NewUserStore returns a user store management
+func NewUserStore(session *mgo.Session) model.UserStorer {
 	return &UserStore{session}
 }

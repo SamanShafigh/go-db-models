@@ -75,12 +75,12 @@ func UserLastNameFilter(lastName string) UserFilterHandler {
 
 // GetUserFilter applays all filter handlers and returns a UserFilter object
 func GetUserFilter(filters ...UserFilterHandler) UserFilter {
-	fc := UserFilter{}
+	f := UserFilter{}
 	for _, filter := range filters {
-		filter(&fc)
+		filter(&f)
 	}
 
-	return fc
+	return f
 }
 
 // MakeUser makes a new user
