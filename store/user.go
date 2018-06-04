@@ -1,13 +1,13 @@
 package store
 
 import (
-	sqld "github.com/SamanShafigh/go-db-models/db"
+	mysqld "github.com/SamanShafigh/go-db-models/db"
 	"github.com/SamanShafigh/go-db-models/model"
 )
 
 // UserStore implements models.UserStorer
 type UserStore struct {
-	db *sqld.DB
+	db *mysqld.DB
 }
 
 // Get gets list of user entities based on filter handler
@@ -59,6 +59,6 @@ func (cs *UserStore) Delete(fh ...model.UserFilterHandler) error {
 }
 
 // NewUserStore returns a user store management
-func NewUserStore(db *sqld.DB) model.UserStorer {
+func NewUserStore(db *mysqld.DB) model.UserStorer {
 	return &UserStore{db}
 }
