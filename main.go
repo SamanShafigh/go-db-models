@@ -2,26 +2,34 @@ package main
 
 import (
 	"fmt"
+	"log"
 
+	sqld "github.com/SamanShafigh/go-db-models/db"
 	"github.com/SamanShafigh/go-db-models/model"
 	"github.com/SamanShafigh/go-db-models/store"
-	"github.com/SamanShafigh/go-db-models/util"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jmoiron/sqlx"
 )
 
 func main() {
-	mysqlDb, _ := sqlx.Connect("mysql", "user:pass@tcp(127.0.0.1:port)/dbName")
+	db, _ := sqld.Connect("user:pass@tcp(127.0.0.1:port)/dbName")
+	userStore := store.NewUserStore(db)
 
-	userStore := store.NewUserStore(mysqlDb)
+	user1 := model.MakeUser(sqld.MakeUUID(), "Saman", "Shafigh", 1)
+	userStore.Add(user1)
 
-	user := model.MakeUser(util.MakeUUID(), "Saman", "Shafigh")
-	userStore.Create(user)
+	user2, err := userStore.GetByID("981894c2-af67-4204-957c-11bfebe5d346")
+	fmt.Printf("%+v\n\n", user2)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	users, _ := userStore.List(
+	users, err := userStore.Get(
+		model.UserStatusFilter(1),
 		model.UserFirstNameFilter("Saman"),
-		model.UserFirstNameFilter("Shafigh"),
+		model.UserLastNameFilter("Shafigh"),
 	)
-
+	if err != nil {
+		log.Fatal(err)
+	}
 	fmt.Printf("%+v", users)
 }

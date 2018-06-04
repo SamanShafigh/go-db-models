@@ -1,43 +1,64 @@
 package store
 
 import (
+	sqly "github.com/SamanShafigh/go-db-models/db"
 	"github.com/SamanShafigh/go-db-models/model"
-	"github.com/jmoiron/sqlx"
 )
 
 // UserStore implements models.UserStorer
 type UserStore struct {
-	db *sqlx.DB
+	db *sqly.DB
 }
 
-func (cs *UserStore) List(filters ...model.UserFilter) ([]model.User, error) {
+// Get gets list of user entities based on filter handler
+func (cs *UserStore) Get(fh ...model.UserFilterHandler) (*[]model.User, error) {
+	var user model.User
+	var users []model.User
 
-	userFilter := model.UserFilterConfig{}
-	for _, filter := range filters {
-		filter(&userFilter)
+	rows, err := cs.db.Query("SELECT * FROM _user", model.GetUserFilter(fh...))
+	for rows.Next() {
+		err := rows.StructScan(&user)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, user)
 	}
 
-	return nil, nil
+	return &users, err
 }
 
-func (cs *UserStore) Get(filters ...model.UserFilter) (model.User, error) {
-	return model.User{}, nil
+// GetByID gets one user by ID
+func (cs *UserStore) GetByID(ID string) (*model.User, error) {
+	var user model.User
+	err := cs.db.QueryRowx("SELECT * FROM _user WHERE id = ?", ID).StructScan(&user)
+
+	return &user, err
 }
 
-func (cs *UserStore) Create(User model.User) error {
-	_, err := cs.db.NamedExec("INSERT INTO _user (id, email, password, first_name, last_name) VALUES (:id, :email, :password, :first_name, :last_name)", User)
+// Add adds a user entity
+func (cs *UserStore) Add(User model.User) error {
+	_, err := cs.db.NamedExec(
+		`INSERT INTO _user 
+			(id, status, email, password, first_name, last_name) 
+		VALUES 
+			(:id, :status, :email, :password, :first_name, :last_name)`,
+		User,
+	)
 
 	return err
 }
 
+// Update updates a user entity
 func (cs *UserStore) Update(User model.User) error {
 	return nil
 }
 
-func (cs *UserStore) Delete(filters ...model.UserFilter) error {
+// Delete deletes a user entity
+func (cs *UserStore) Delete(fh ...model.UserFilterHandler) error {
 	return nil
 }
 
-func NewUserStore(db *sqlx.DB) model.UserStorer {
+// NewUserStore returns a user store management
+func NewUserStore(db *sqly.DB) model.UserStorer {
 	return &UserStore{db}
 }
