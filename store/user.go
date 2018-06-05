@@ -36,20 +36,20 @@ func (cs *UserStore) GetByID(ID string) (*model.User, error) {
 }
 
 // Add adds a user entity
-func (cs *UserStore) Add(User model.User) error {
+func (cs *UserStore) Add(user model.User) error {
 	_, err := cs.db.NamedExec(
 		`INSERT INTO _user 
 			(id, status, email, password, first_name, last_name) 
 		VALUES 
 			(:id, :status, :email, :password, :first_name, :last_name)`,
-		User,
+		user,
 	)
 
 	return err
 }
 
 // Update updates a user entity
-func (cs *UserStore) Update(User model.User) error {
+func (cs *UserStore) Update(user model.User) error {
 	return nil
 }
 
