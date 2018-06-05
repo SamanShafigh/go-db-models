@@ -25,8 +25,8 @@ func Connect(dataSourceName string) (*DB, error) {
 	return &DB{db}, nil
 }
 
-// Query makes a DB query
-func (db *DB) Query(query string, filter interface{}) (*sqlx.Rows, error) {
+// QueryWithFilter makes a DB query with apassing filter object
+func (db *DB) QueryWithFilter(query string, filter interface{}) (*sqlx.Rows, error) {
 	f, _ := getQueryString(filter)
 	if f != "" {
 		query = fmt.Sprintf("%s WHERE %s", query, f)

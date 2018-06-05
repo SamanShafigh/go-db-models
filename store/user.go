@@ -15,7 +15,7 @@ func (cs *UserStore) Get(fh ...model.UserFilterHandler) (*[]model.User, error) {
 	var user model.User
 	var users []model.User
 
-	rows, err := cs.db.Query("SELECT * FROM _user", model.GetUserFilter(fh...))
+	rows, err := cs.db.QueryWithFilter("SELECT * FROM _user", model.GetUserFilter(fh...))
 	for rows.Next() {
 		err := rows.StructScan(&user)
 		if err != nil {
