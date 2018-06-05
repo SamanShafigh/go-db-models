@@ -35,11 +35,11 @@ func (cs *UserStore) Get(fh ...model.UserFilterHandler) (*[]model.User, error) {
 	return nil, nil
 }
 
-func (cs *UserStore) Add(User model.User) error {
+func (cs *UserStore) Add(user model.User) error {
 	return nil
 }
 
-func (cs *UserStore) Update(User model.User) error {
+func (cs *UserStore) Update(user model.User) error {
 	return nil
 }
 
